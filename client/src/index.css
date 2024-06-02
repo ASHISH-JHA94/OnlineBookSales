@@ -6,12 +6,33 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x:hidden;
+  overflow-y: auto;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* Custom keyframes for toast animation */
+@keyframes toast-from-right {
+  from {
+      transform: translateX(100%);
+  }
+  to {
+      transform: translateX(0%);
+  }
+}
+
+.custom-loader {
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  background:conic-gradient(#0000 10%,#766DF4);
+  -webkit-mask:radial-gradient(farthest-side,#0000 calc(100% - 16px),#000 0);
+  animation:s3 1s infinite linear;
+}
+@keyframes s3 {to{transform: rotate(1turn)}}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
