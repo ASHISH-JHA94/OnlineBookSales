@@ -8,6 +8,8 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
 
   const { shippingInfo, paymentInfo, itemsPrice, taxPrice, shippingPrice, totalPrice, orderItems } = req.body;
 
+  
+
 
 
   try {
@@ -70,15 +72,32 @@ exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
   });
 
   // GET LOGGED IN CUSTOMER  ORDERS
-exports.myOrders = catchAsyncErrors(async (req, res, next) => {
-    const orders = await Order.find({ user: req.user._id });
+  exports.myOrders = catchAsyncErrors(async (req, res, next) => {
+    if (!req.user || !req.user._id) {
+      console.log("User ID not found in request");
+      return next(new ErrorHandler("User ID not found in request", 400));
+    }
   
-    res.status(200).json({
-      success: true,
-      orders,
-    });
+    console.log("Fetching orders for user", req.user._id);
+  
+    try {
+      const orders = await Order.find({ user: "6640bce75e5847071fdfb6f1"});
+  
+      if (!orders || orders.length === 0) {
+        console.log("No orders found for user", req.user._id);
+        return next(new ErrorHandler("No orders found", 404));
+      }
+  
+      
+      res.status(200).json({
+        success: true,
+        orders,
+      });
+    } catch (error) {
+      console.log("Error fetching orders", error);
+      return next(new ErrorHandler("Error fetching orders", 500));
+    }
   });
-
   
 // UPDATE ORDER STATUS -- ADMIN
 exports.updateOrder = catchAsyncErrors(async (req, res, next) => {

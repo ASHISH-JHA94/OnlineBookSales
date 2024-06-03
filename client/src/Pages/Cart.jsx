@@ -59,6 +59,7 @@ const Cart = () => {
   const handleFormSubmit = async (formData) => {
     try {
       const token = localStorage.getItem('token');
+      console.log(cart);
       if (token) {
         const orderItems = cart.map(item => {
           const { productDetails } = item;
@@ -66,7 +67,7 @@ const Cart = () => {
             name: productDetails.name,
             price: productDetails.price,
             quantity: 1, // Assuming quantity is 1 as it's not provided in the cart object
-            image: productDetails.images[0], // Assuming the first image
+            image: productDetails.images.url, // Assuming the first image
             product: productDetails._id,
           };
         });
