@@ -16,7 +16,7 @@ router.route("/myorders").get(isAuthenticatedUser,myOrders);
 
 router.route("/new").post(isAuthenticatedUser, newOrder);
 
-router.route("/getAll").get(getAllOrders);
+router.route("/getAll").get(isAuthenticatedUser,getAllOrders);
 
 router.route("/:id").get(isAuthenticatedUser, getSingleOrder);
 

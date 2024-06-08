@@ -1,3 +1,4 @@
+// Import necessary dependencies
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Avatar, Box, Typography, Button, CircularProgress, Paper, TextField, Grid, MenuItem, Rating } from '@mui/material';
@@ -16,9 +17,15 @@ const Profile = () => {
     ratings: 0,
     shareableLink: '',
     image: { public_id: '', url: '' },
+    // Add address fields
+    address: '',
+    city: '',
+    state: '',
+    country: '',
   });
   const [formLoading, setFormLoading] = useState(false);
 
+  // Fetch user data when component mounts
   useEffect(() => {
     const fetchUserData = async () => {
       const token = localStorage.getItem('token');
@@ -42,6 +49,7 @@ const Profile = () => {
     fetchUserData();
   }, []);
 
+  // Handle input change for form fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setBookDetails({
@@ -50,6 +58,7 @@ const Profile = () => {
     });
   };
 
+  // Handle image change
   const handleImageChange = (e) => {
     const { name, value } = e.target;
     setBookDetails({
@@ -61,6 +70,7 @@ const Profile = () => {
     });
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormLoading(true);
@@ -72,6 +82,7 @@ const Profile = () => {
         }
       });
       console.log('Book listed successfully:', response.data);
+      // Reset form after successful submission
       setBookDetails({
         name: '',
         author: '',
@@ -82,6 +93,10 @@ const Profile = () => {
         ratings: 0,
         shareableLink: '',
         image: { public_id: '', url: '' },
+        address: '',
+        city: '',
+        state: '',
+        country: '',
       });
     } catch (error) {
       console.error('Error listing book:', error);
@@ -90,6 +105,7 @@ const Profile = () => {
     }
   };
 
+  // Loading state
   if (loading) {
     return (
       <Box className="flex justify-center items-center h-screen">
@@ -98,6 +114,7 @@ const Profile = () => {
     );
   }
 
+  // User not found state
   if (!user) {
     return (
       <Box className="flex justify-center items-center h-screen">
@@ -106,10 +123,12 @@ const Profile = () => {
     );
   }
 
+  // Avatar text
   const avatarText = `${user.name[0]}${user.name.split(' ').slice(-1)[0][0]}`;
 
   return (
     <Box className="max-w-4xl mx-auto p-6 mt-10 bg-white rounded-lg shadow-lg">
+      {/* Profile details section */}
       <Paper elevation={3} className="p-6">
         <Box className="flex items-center space-x-6 mb-8">
           <Avatar sx={{ bgcolor: deepPurple[500], width: 56, height: 56 }}>
@@ -155,12 +174,56 @@ const Profile = () => {
         </Button>
       </Paper>
 
+      {/* Sell your old book section */}
       <Paper elevation={3} className="p-6 mt-6">
         <Typography variant="h5" component="h2" className="text-gray-900 font-bold mb-4">
           Sell Your Old Book
         </Typography>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
+            {/* Form fields for listing old book */}
+            {/* Add fields for address */}
+            <Grid item xs={12}>
+              <TextField
+                label="Address"
+                name="address"
+                value={bookDetails.address}
+                onChange={handleInputChange}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="City"
+                name="city"
+                value={bookDetails.city}
+                onChange={handleInputChange}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="State"
+                name="state"
+                value={bookDetails.state}
+                onChange={handleInputChange}
+                fullWidth
+                required
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Country"
+                name="country"
+                value={bookDetails.country}
+                onChange={handleInputChange}
+                fullWidth
+                required
+              />
+            </Grid>
+            {/* Remaining form fields */}
             <Grid item xs={12}>
               <TextField
                 label="Book Name"

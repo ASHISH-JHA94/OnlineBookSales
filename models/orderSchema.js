@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const locationSchema = new mongoose.Schema({
+  latitude: {
+    type: Number,
+    required: true,
+  },
+  longitude: {
+    type: Number,
+    required: true,
+  },
+});
+
 const orderSchema = new mongoose.Schema({
   shippingInfo: {
     address: {
@@ -10,12 +21,10 @@ const orderSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-
     state: {
       type: String,
       required: true,
     },
-
     country: {
       type: String,
       required: true,
@@ -26,6 +35,14 @@ const orderSchema = new mongoose.Schema({
     },
     phoneNo: {
       type: Number,
+      required: true,
+    },
+    source: {
+      type: locationSchema, // Subdocument for source location
+      required: true,
+    },
+    destination: {
+      type: locationSchema, // Subdocument for destination location
       required: true,
     },
   },

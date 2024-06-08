@@ -27,22 +27,37 @@ const customerSchema = new mongoose.Schema({
   avatar: {
     public_id: {
       type: String,
-      required: true,
+      
     },
     url: {
       type: String,
-      required: true,
+      
     },
   },
   role: {
     type: String,
     default: "user",
   },
+  address: {
+    type: String,
+    
+  },
+  city: {
+    type: String,
+    
+  },
+  state: {
+    type: String,
+    
+  },
+  country: {
+    type: String,
+    
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-
   resetPasswordToken: String,
   resetPasswordExpire: Date,
 });

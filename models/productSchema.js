@@ -11,7 +11,7 @@ const productSchema = mongoose.Schema({
     required: [true, "Please Enter Product Description"],
   },
   author:{
-  type: String,
+    type: String,
     required: [true, "Please Enter Product Author"],
   },
   price: {
@@ -23,18 +23,16 @@ const productSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
-  images: 
-    {
-      public_id: {
-        type: String,
-        required: true,
-      },
-      url: {
-        type: String,
-        required: true,
-      },
+  images: {
+    public_id: {
+      type: String,
+      required: true,
     },
-  
+    url: {
+      type: String,
+      required: true,
+    },
+  },
   category: {
     type: String,
     required: [true, "Please Enter Product Category"],
@@ -53,7 +51,7 @@ const productSchema = mongoose.Schema({
     {
       user: {
         type: mongoose.Schema.ObjectId,
-        ref: "User",
+        ref: "Customer", // Corrected from "user" to "Customer"
         required: true,
       },
       name: {
@@ -72,7 +70,7 @@ const productSchema = mongoose.Schema({
   ],
   user: {
     type: mongoose.Schema.ObjectId,
-    ref: "User",
+    ref: "Customer", // Corrected from "user" to "Customer"
     required: true,
   },
   createdAt: {
@@ -83,7 +81,6 @@ const productSchema = mongoose.Schema({
     type: String,
     required:true,
   },
-
 });
 
 module.exports = mongoose.model("Product", productSchema);

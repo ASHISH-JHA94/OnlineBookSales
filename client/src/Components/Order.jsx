@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import Spinner from './Spinner';
 
 export default function Orders({ setChartData, setSummaryData }) {
   const [orders, setOrders] = useState([]);
@@ -9,8 +10,15 @@ export default function Orders({ setChartData, setSummaryData }) {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/order/getAll');
+        const token=localStorage.getItem('token');
+        const response = await axios.get('http://localhost:8080/order/getAll',{
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
         const fetchedOrders = response.data.orders;
+        
         setOrders(fetchedOrders);
 
         // Aggregate data for charts and summary
@@ -42,7 +50,7 @@ export default function Orders({ setChartData, setSummaryData }) {
   }, [setChartData, setSummaryData]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div><Spinner/></div>;
   }
 
   return (
