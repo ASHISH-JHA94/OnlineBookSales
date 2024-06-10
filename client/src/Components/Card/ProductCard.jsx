@@ -1,15 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { AiFillHeart } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-hot-toast";
+import { useToast } from "../../Context/ToastContext";
 import { addToCart, removeFromCart } from "../../redux/Slices/CartSlice";
 import { Like, dislike } from "../../redux/Slices/WishListSlice";
+import { useAuth } from "../../Context/AuthContext";
 import { Rating, Typography } from '@mui/material'; // Importing Rating and Typography from Material-UI
+
 
 const Product = (props) => {
   const post = props.post;
   const cart = useSelector((state) => state.cart);
+  const { userLoggedIn} = useAuth();
   const WishList = useSelector((state) => state.WishList);
+  const {showToast}=useToast();
 
   const dispatch = useDispatch();
 
@@ -19,21 +23,21 @@ const Product = (props) => {
 
   const add_to_Cart = () => {
     dispatch(addToCart(post));
-    toast.success("Item added to Cart");
+    showToast.success("success","cart","item added to cart successfully")
   };
 
   const remove_from_cart = () => {
     dispatch(removeFromCart(post._id));
-    toast.error("Item removed from Cart");
+    showToast("warning","cart","item removed from cart")
   };
 
   const toggleLike = () => {
     if (like) {
       dispatch(dislike(post._id));
-      toast.error("Item removed from Wishlist");
+      showToast("warning","wishlist","item removed from wishlist");
     } else {
       dispatch(Like(post));
-      toast.success("Item added to Wishlist");
+      showToast("success","wishlist","item added to wishlist");
     }
     setLike(!like);
   };
@@ -92,6 +96,7 @@ const Product = (props) => {
             Remove Item
           </button>
         ) : (
+          userLoggedIn &&
           <button
             className="text-gray-700 border-2 border-gray-700 rounded-full font-semibold 
             text-[12px] p-1 px-3 uppercase 

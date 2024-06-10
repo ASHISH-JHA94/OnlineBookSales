@@ -31,6 +31,11 @@ code {
   -webkit-mask:radial-gradient(farthest-side,#0000 calc(100% - 16px),#000 0);
   animation:s3 1s infinite linear;
 }
+.placeholder-bold::placeholder {
+  font-weight: bold;
+  font:medium;
+  color:rgba(0, 0, 0, 0.579);
+}
 @keyframes s3 {to{transform: rotate(1turn)}}
 
 @tailwind base;

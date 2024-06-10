@@ -6,7 +6,7 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import Lottie from "lottie-react";
 import loginAnimation from '../Lottie-animation/loginAnimation.json'
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast"
+
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
 import { useToast } from "../Context/ToastContext";
@@ -25,7 +25,7 @@ const LoginPage = () => {
     try {
       const response = await axios.post("http://localhost:8080/customer/login", { email, password })
       console.log(response.data);
-      toast.success("login sucess")
+      
       // reset form and err msg on sucess
       setEmail("");
       setPassword("");
@@ -33,17 +33,18 @@ const LoginPage = () => {
       const { token } = response.data;
       localStorage.setItem('token', token);
       setUserLoggedIn(true);
-      showToast("success","","Logged in successfully");
+      showToast("success","Login","Logged in successfully");
       navigate('/', { replace: true });
     } catch (err) {
       setError(err.response.data.message);//set error message received from backend
+      showToast("error","Login",err.response.data.message);
     }
 
   }
   return (
     <Container maxWidth="xl">
       <div style={{ marginTop: "100px", marginBottom: "180px" }}>
-<Toaster/>
+
         <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
           <Grid item xs={12} md={6}>
             <Box sx={{ display: { xs: "none", md: "block" } }}>

@@ -40,7 +40,7 @@ const Wishlist = () => {
         ) : (
           <div className="min-h-[80vh] flex flex-col items-center justify-center">
             <h1 className="text-gray-700 font-semibold text-xl mb-2">Your wishlist is empty!</h1>
-            <Link to={"/"}>
+            <Link to={"/shop"}>
               <button className="uppercase bg-green-600 hover:bg-purple-50 rounded-lg text-white transition duration-300 ease-linear mt-5 border-2 border-green-600 font-semibold hover:text-green-700 p-3 px-10 tracking-wider">
                 Shop Now
               </button>

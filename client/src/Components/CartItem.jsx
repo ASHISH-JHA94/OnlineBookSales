@@ -2,14 +2,14 @@ import React from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { removeFromCart } from "../redux/Slices/CartSlice";
-import { toast } from "react-hot-toast";
+import { useToast } from "../Context/ToastContext";
 
 const CartItem = ({ item, itemIndex, fetchCartData }) => {
   const dispatch = useDispatch();
-
+  const {showToast}=useToast();
   const remove_From_Cart = async () => {
     await dispatch(removeFromCart(item._id));
-    toast.success("Item Removed");
+    showToast("warning","","Item removed");
     fetchCartData(); // Fetch updated cart data
   };
 

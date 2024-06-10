@@ -1,8 +1,9 @@
 
 import "./App.css";
 // import {Outlet} from "react-router-dom";
-import { Navbar, Footer } from './Components/index.js';
-import { Product } from './Components/index';
+import Navbar from "./Components/NavBar/NavBar.jsx";
+import Footer from "./Components/Footer/Footer.jsx";
+import Product from "./Components/Card/ProductCard.jsx";
 import LoginPage from './Pages/LoginPage.jsx';
 import SignUpPage from './Pages/SignUpPage.jsx';
 import Cart from './Pages/Cart.jsx';

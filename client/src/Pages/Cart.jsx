@@ -9,6 +9,7 @@ import axios from "axios";
 import Spinner from "../Components/Spinner";
 import CheckoutForm from "../Components/CheckoutForm";
 import { Button, Typography, Box } from '@mui/material';
+import { useToast } from "../Context/ToastContext";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
@@ -17,6 +18,7 @@ const Cart = () => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const {showToast}=useToast();
 
   const fetchCartData = async () => {
     const token = localStorage.getItem('token');
@@ -31,8 +33,10 @@ const Cart = () => {
           });
           const updatedCart = response.data.cartItems;
           dispatch(updateUserCart(updatedCart));
+          showToast("success","Cart","Fetch Cart successfully");
         } catch (error) {
           console.error("Error updating user cart:", error);
+          showToast("error","Cart","Error updating cart");
         } finally {
           setLoading(false);
         }
@@ -101,10 +105,11 @@ const Cart = () => {
         });
 
         console.log("Checkout successful:", response.data);
-        // Optionally, you can redirect the user to a success page after checkout
+        showToast("success","Cart","Checkout successful");
       }
     } catch (error) {
       console.error("Error during checkout:", error);
+      showToast("error","Cart",error.message);
       // Handle error, show error message to the user, etc.
     }
   };
@@ -150,23 +155,23 @@ const Cart = () => {
               </div>
             ) : (
               <div className="min-h-[80vh] flex flex-col items-center justify-center">
-                <Typography variant="h5">Your Cart is Empty</Typography>
-                <Link to="/shop">
-                  <Button variant="contained" color="success" fontWeight={25} sx={{ mt: 2 }}>
-                    Go to Shop
-                  </Button>
-                </Link>
-              </div>
+            <h1 className="text-gray-700 font-semibold text-xl mb-2">Your cart is empty!</h1>
+            <Link to={"/shop"}>
+              <button className="uppercase bg-green-600 hover:bg-purple-50 rounded-lg text-white transition duration-300 ease-linear mt-5 border-2 border-green-600 font-semibold hover:text-green-700 p-3 px-10 tracking-wider">
+                Shop Now
+              </button>
+            </Link>
+          </div>
             )
           ) : (
             <div className="min-h-[80vh] flex flex-col items-center justify-center">
-              <Typography variant="h4" fontWeight={"bold"} >Please Login to View Your Cart</Typography>
-              <Link to="/login">
-                <Button variant="contained" color="success" sx={{ mt: 2,  width:"12vw", fontSize:18, fontWeight:"bold" }}>
-                  Login
-                </Button>
-              </Link>
-            </div>
+          <h1 className="text-gray-700 font-semibold text-xl mb-2">Please Login First!</h1>
+          <Link to="/login">
+            <button className="uppercase bg-green-600 hover:bg-purple-50 rounded-lg text-white transition duration-300 ease-linear mt-5 border-2 border-green-600 font-semibold hover:text-green-700 p-3 px-10 tracking-wider">
+              Login Now
+            </button>
+          </Link>
+        </div>
           )}
         </>
       )}

@@ -5,7 +5,7 @@ const FilterContext = createContext();
 
 // Create provider component
 export const FilterProvider = ({ children }) => {
-  const [filter, setFilter] = useState('Classic');
+  const [filter, setFilter] = useState('');
 
   return (
     <FilterContext.Provider value={{ filter, setFilter }}>

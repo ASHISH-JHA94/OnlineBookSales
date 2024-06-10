@@ -27,31 +27,31 @@ const Home = () => {
       <section className="container mx-auto my-8">
         <h2 className="text-3xl font-bold mb-6 text-gray-800">Book Categories</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow-lg p-6 slide-in transition-opacity duration-500" onClick={()=>filterChange('Romance')}>
+          <div className="bg-white rounded-lg shadow-lg p-6  hover:bg-green-400 hover:cursor-pointer hover:scale-105" onClick={()=>filterChange('Romance')}>
             <h3 className="text-xl font-bold mb-2">Romance</h3>
             <p className="text-gray-600">Explore our collection of romantic novels.</p>
           </div>
-          <div className="bg-white rounded-lg shadow-lg p-6 slide-in transition-opacity duration-500 delay-100" onClick={()=>filterChange('Action')}>
+          <div className="bg-white rounded-lg shadow-lg p-6  hover:bg-green-400 hover:cursor-pointer hover:scale-105" onClick={()=>filterChange('Action')}>
             <h3 className="text-xl font-bold mb-2">Action</h3>
             <p className="text-gray-600">Dive into thrilling action-packed stories.</p>
           </div>
-          <div className="bg-white rounded-lg shadow-lg p-6 slide-in transition-opacity duration-500 delay-200" onClick={()=>filterChange('Thriller')}>
+          <div className="bg-white rounded-lg shadow-lg p-6  hover:bg-green-400 hover:cursor-pointer hover:scale-105" onClick={()=>filterChange('Thriller')}>
             <h3 className="text-xl font-bold mb-2">Thriller</h3>
             <p className="text-gray-600">Get your adrenaline pumping with our thrillers.</p>
           </div>
-          <div className="bg-white rounded-lg shadow-lg p-6 slide-in transition-opacity duration-500 delay-300" onClick={()=>filterChange('Fiction')}>
+          <div className="bg-white rounded-lg shadow-lg p-6  hover:bg-green-400 hover:cursor-pointer hover:scale-105" onClick={()=>filterChange('Fiction')}>
             <h3 className="text-xl font-bold mb-2">Fiction</h3>
             <p className="text-gray-600">Discover imaginative and captivating fiction.</p>
           </div>
-          <div className="bg-white rounded-lg shadow-lg p-6 slide-in transition-opacity duration-500 delay-400" onClick={()=>filterChange('Tech')}>
+          <div className="bg-white rounded-lg shadow-lg p-6  hover:bg-green-400 hover:cursor-pointer hover:scale-105" onClick={()=>filterChange('Tech')}>
             <h3 className="text-xl font-bold mb-2">Tech</h3>
             <p className="text-gray-600">Stay updated with the latest in technology.</p>
           </div>
-          <div className="bg-white rounded-lg shadow-lg p-6 slide-in transition-opacity duration-500 delay-500"onClick={()=>filterChange('Classic')}>
+          <div className="bg-white rounded-lg shadow-lg p-6  hover:bg-green-400 hover:cursor-pointer hover:scale-105"onClick={()=>filterChange('Classic')}>
             <h3 className="text-xl font-bold mb-2 ">Classic</h3>
             <p className="text-gray-600">Dive deep into philosophical thoughts and ideas.</p>
           </div>
-          <div className="bg-white rounded-lg shadow-lg p-6 slide-in transition-opacity duration-500 delay-600" onClick={()=>filterChange('Manga')}>
+          <div className="bg-white rounded-lg shadow-lg p-6  hover:bg-green-400 hover:cursor-pointer hover:scale-105" onClick={()=>filterChange('Manga')}>
             <h3 className="text-xl font-bold mb-2">Manga</h3>
             <p className="text-gray-600">Explore our extensive collection of Manga.</p>
           </div>

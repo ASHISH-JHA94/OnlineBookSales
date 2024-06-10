@@ -1,6 +1,7 @@
 import React from "react";
 import { useSearchBar } from "../Context/SearchBarContext";
 
+
 const SearchBar = () => {
     const { searchBarTerm, setSearchBarTerm } = useSearchBar();
 
@@ -10,7 +11,7 @@ const SearchBar = () => {
             value={searchBarTerm}
             onChange={(e) => setSearchBarTerm(e.target.value)}
             placeholder="Search products..."
-            className=" p-2 w-80 mt-2 text-black  bg-blue-100"
+            className="border-2 border-black w-1/3 text-center bg-orange-200 text-black p-2 rounded-md placeholder-bold"
         />
     );
 };

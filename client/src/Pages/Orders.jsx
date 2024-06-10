@@ -3,11 +3,13 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import Spinner from '../Components/Spinner';
 import MapComponent from '../Components/MapComponent';
+import { useToast } from '../Context/ToastContext';
 
 const PastOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const {showToast}=useToast();
 
   const fetchOrders = async () => {
     try {
@@ -22,10 +24,12 @@ const PastOrders = () => {
         }
       });
       setOrders(response.data.orders);
+      showToast("success","Order","Order Fetched Successfully")
       setLoading(false);
     } catch (error) {
       console.error("There was an error fetching the orders!", error);
       setError(error.response ? error.response.data.message : error.message);
+      showToast("error","Order",error.message);
       setLoading(false);
     }
   };

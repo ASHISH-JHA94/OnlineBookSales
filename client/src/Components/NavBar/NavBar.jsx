@@ -17,7 +17,7 @@ const StyledAppBar = styled(AppBar)({
 const StyledButton = styled(Button)({
   fontSize: '1rem', // Adjust font size
   '&:hover': {
-    color: '#FFD700', // Adjust hover color
+    color: '#FFD700', 
     textDecoration: 'underline', // Underline on hover
   },
 });
@@ -32,7 +32,7 @@ function Navbar() {
   const { showToast } = useToast();
 
   const cart = useSelector((state) => state.cart);
-  const wishlist = useSelector((state) => state.WishList); // 
+  const wishlist = useSelector((state) => state.WishList);
 
   const handleMenuClick = () => {
     setOpenMenu(!openMenu);
@@ -56,7 +56,20 @@ function Navbar() {
   return (
     <StyledAppBar position="sticky">
       <Toolbar>
-        <Typography variant="h6" component={Link} to="/" sx={{ flexGrow: 1, fontSize: '1.5rem' }}>
+      <Typography
+          variant="h6"
+          component={Link}
+          to="/"
+          sx={{
+            flexGrow: 1,
+            fontSize: '1.5rem',
+            textDecoration: 'none',
+            color: 'inherit',
+            '&:hover': {
+              color: 'yellow',
+            },
+          }}
+        >
           Book4u
         </Typography>
         {isMobile ? (
@@ -66,7 +79,7 @@ function Navbar() {
             aria-label="menu"
             onClick={handleMenuClick}
           >
-            <MenuIcon sx={{ fontSize: '2rem' }} />
+            <MenuIcon sx={{ fontSize: '2rem'}} />
           </IconButton>
         ) : (
           <div className='flex items-center gap-4'>
@@ -80,7 +93,7 @@ function Navbar() {
               {userLoggedIn ? "Logout" : "Login"}
             </StyledButton>
             {userLoggedIn && (
-              <StyledButton c
+              <StyledButton
                 color="inherit"
                 component={Link}
                 to="/profile"
@@ -92,7 +105,9 @@ function Navbar() {
             <StyledButton color="inherit" component={Link} to="/shop" startIcon={<StoreIcon sx={{ fontSize: '1.5rem' }} />}>
               Shop
             </StyledButton>
-            <NavLink to="/wishlist" className="relative flex items-center">
+            
+            <StyledButton color="inherit">
+            <NavLink to="/wishlist" className="relative flex items-center gap-1">
               <FaHeart className="text-xl mr-1" />
               <span>Wishlist</span>
               {wishlist.length > 0 && (
@@ -101,24 +116,27 @@ function Navbar() {
                 </span>
               )}
             </NavLink>
-            <NavLink to="/cart" className="relative flex items-center hover:">
+            </StyledButton>
+            <StyledButton color="inherit">
+            <NavLink to="/cart" className="relative flex items-center gap-1">
               <FaShoppingCart className="text-xl mr-1" />
               <span>Cart</span>
-              {cart.length > 0 && (
+              {userLoggedIn && cart.length > 0 && (
                 <span className="absolute -top-1 -right-2 bg-green-600 text-xs w-5 h-5 flex justify-center items-center animate-bounce rounded-full text-white">
                   {cart.length}
                 </span>
               )}
             </NavLink>
+            </StyledButton>
+            
             <StyledButton color="inherit" component={Link} to="/orders" startIcon={<ShoppingBagIcon sx={{ fontSize: '1.5rem' }} />}>
               Orders
             </StyledButton>
           </div>
         )}
       </Toolbar>
-      {/* Conditional rendering for the mobile menu */}
       {isMobile && (
-        <div style={{ display: openMenu ? 'block' : 'none' }}>
+        <div style={{ display: openMenu ? 'flex' : 'none' }} className='flex-col'>
           <StyledButton
             color="inherit"
             component={Link}
@@ -140,27 +158,33 @@ function Navbar() {
               Profile
             </StyledButton>
           )}
-          <StyledButton color="inherit" component={Link} to="/shop" startIcon={<StoreIcon sx={{ fontSize: '1.5rem' }} />} fullWidth>
+          <StyledButton color="inherit" component={Link} to="/shop" startIcon={<StoreIcon sx={{ fontSize: '1rem' }} />} fullWidth>
             Shop
           </StyledButton>
-          <NavLink to="/wishlist" className="relative flex hover:color=[#FFD700] items-center">
-            <FaHeart className="text-2xl mr-1 hover:text-color-[#FFD700]" />
-            <span>Wishlist</span>
+
+          <StyledButton color='inherit'>
+          <NavLink to="/wishlist" className="relative flex justify-center">
+            <FaHeart className="text-2xl mr-1" />
+            <span>WISHLIST</span>
             {wishlist.length > 0 && (
               <span className="absolute -top-1 -right-2 bg-red-600 text-xs w-5 h-5 flex justify-center items-center animate-bounce rounded-full text-white">
                 {wishlist.length}
               </span>
             )}
           </NavLink>
-          <NavLink to="/cart" className="relative flex items-center">
+          </StyledButton>
+
+          <StyledButton color='inherit'>
+          <NavLink to="/cart" className="relative flex justify-center">
             <FaShoppingCart className="text-2xl mr-1" />
-            <span>Cart</span>
+            <span>CART</span>
             {cart.length > 0 && (
               <span className="absolute -top-1 -right-2 bg-green-600 text-xs w-5 h-5 flex justify-center items-center animate-bounce rounded-full text-white">
                 {cart.length}
               </span>
             )}
           </NavLink>
+          </StyledButton>
           <StyledButton color="inherit" component={Link} to="/orders" startIcon={<ShoppingBagIcon sx={{ fontSize: '1.5rem' }} />} fullWidth>
             Orders
           </StyledButton>
