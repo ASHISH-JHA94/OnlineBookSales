@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book4u
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book4u
+  template:
+    metadata:
+      labels:
+        app: book4u
+    spec:
+      containers:
+      - name: book4u
+        image: ashishjha94/book4u:tagname
+        
+        ports:
+        - containerPort: 80
+        envFrom:
+        - configMapRef:
+            name: react-app-config  
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: book4u-service
+spec:
+  selector:
+    app: book4u
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer

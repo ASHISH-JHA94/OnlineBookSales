@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: book4u-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: book4u-backend
+  template:
+    metadata:
+      labels:
+        app: book4u-backend
+    spec:
+      containers:
+      - name: book4u-backend
+        image: ashishjha94/book4ubackend:tag
+        ports:
+        - containerPort: 8080
+        env:
+        - name: MONGO_URL
+          value: MONGODB_URI
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: book4u-backend-service
+spec:
+  selector:
+    app: book4u-backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer

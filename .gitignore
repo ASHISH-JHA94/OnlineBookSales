@@ -1,2 +1,5 @@
 node_modules/
 .env
+K8s/client/configmap.yaml
+K8s/mongo/mongo-secret.yaml
+K8s/mongo-express/mongo-express-secret.yaml
