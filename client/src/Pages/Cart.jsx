@@ -100,7 +100,7 @@ const Cart = () => {
 
         console.log(order);
 
-        const response = await axios.post("https://www.myoldbookbackend.com/order/new", order, {
+        const response = await axios.post("https://old-book-sales.vercel.app/order/new", order, {
           headers: { Authorization: `Bearer ${token}` }
         });
 

@@ -23,7 +23,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post("https://www.myoldbookbackend.com/customer/login", { email, password })
+      const response = await axios.post("https://old-book-sales.vercel.app/customer/login", { email, password })
       console.log(response.data);
       
       // reset form and err msg on sucess

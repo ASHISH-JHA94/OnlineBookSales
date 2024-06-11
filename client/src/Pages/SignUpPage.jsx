@@ -21,7 +21,7 @@ const SignUpPage = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post("https://www.myoldbookbackend.com/customer/register", { name, email, password})
+            const response = await axios.post("https://old-book-sales.vercel.app/customer/register", { name, email, password})
 
             console.log(response.data);
             toast.success("register sucess");

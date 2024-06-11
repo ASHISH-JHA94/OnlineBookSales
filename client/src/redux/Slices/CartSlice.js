@@ -29,7 +29,7 @@ export const removeFromCart = (itemId) => async (dispatch) => {
         const token = localStorage.getItem('token');
 
         // Send request to backend to remove item from cart
-        await axios.post('https://www.myoldbookbackend.com/customer/cart/remove-product', 
+        await axios.post('https://old-book-sales.vercel.app/customer/cart/remove-product', 
             { productId: itemId }, 
             {
                 headers: {
@@ -50,7 +50,7 @@ export const addToCart = (item) => async (dispatch, getState) => {
         dispatch(add(item));
         const token = localStorage.getItem('token');
 
-        await axios.post('https://www.myoldbookbackend.com/customer/cart/add-product', 
+        await axios.post('https://old-book-sales.vercel.app/customer/cart/add-product', 
             { cartItems: [{ product: item._id, price: item.price }] }, 
             {
                 headers: {

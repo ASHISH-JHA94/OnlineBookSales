@@ -11,7 +11,7 @@ export default function Orders({ setChartData, setSummaryData }) {
     const fetchOrders = async () => {
       try {
         const token=localStorage.getItem('token');
-        const response = await axios.get('https://www.myoldbookbackend.com/order/getAll',{
+        const response = await axios.get('https://old-book-sales.vercel.app/order/getAll',{
           headers: {
             Authorization: `Bearer ${token}`
           }
