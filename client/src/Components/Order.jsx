@@ -11,7 +11,7 @@ export default function Orders({ setChartData, setSummaryData }) {
     const fetchOrders = async () => {
       try {
         const token=localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8080/order/getAll',{
+        const response = await axios.get('https://www.myoldbookbackend.com/order/getAll',{
           headers: {
             Authorization: `Bearer ${token}`
           }

@@ -31,7 +31,7 @@ const Profile = () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await axios.get('http://localhost:8080/customer/me', {
+          const response = await axios.get('https://www.myoldbookbackend.com/customer/me', {
             headers: {
               Authorization: `Bearer ${token}`
             }
@@ -76,7 +76,7 @@ const Profile = () => {
     setFormLoading(true);
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.post('http://localhost:8080/product/oldBook/product/new', bookDetails, {
+      const response = await axios.post('https://www.myoldbookbackend.com/product/oldBook/product/new', bookDetails, {
         headers: {
           Authorization: `Bearer ${token}`
         }

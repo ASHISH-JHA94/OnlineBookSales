@@ -27,7 +27,7 @@ const theme = createTheme({
 });
 
 const Shop = () => {
-    const API_URL = "http://localhost:8080/product/getAllProducts";
+    const API_URL = "https://www.myoldbookbackend.com/product/getAllProducts";
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState([]);
     const { searchBarTerm } = useSearchBar();

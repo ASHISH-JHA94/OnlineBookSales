@@ -18,7 +18,7 @@ const PastOrders = () => {
         throw new Error("Token not found. Please log in.");
       }
 
-      const response = await axios.get('http://localhost:8080/order/myorders', {
+      const response = await axios.get('https://www.myoldbookbackend.com/order/myorders', {
         headers: {
           Authorization: `Bearer ${token}`
         }

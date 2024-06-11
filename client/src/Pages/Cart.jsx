@@ -100,7 +100,7 @@ const Cart = () => {
 
         console.log(order);
 
-        const response = await axios.post("http://localhost:8080/order/new", order, {
+        const response = await axios.post("https://www.myoldbookbackend.com/order/new", order, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
