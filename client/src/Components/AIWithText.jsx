@@ -48,7 +48,7 @@ export default function AIWithText() {
     return (
         <div className='mx-auto h-2/3 my-4 w-[80%] md:h-[65vh] lg:w-[25vw] flex justify-center items-center flex-col'>
             <div className="rounded-lg border-l-2 border-y-2 border-r-4 border-[#1b1b25] border-solid response h-[100%] w-full text-xl bg-slate-100 p-3 m-3 overflow-auto">
-                <div className="loading h-full">
+                <div className="flex loading justify-center items-center">
                     {
                         loading && !aiResponse ?
                             <ClipLoader size={150} color={"#123abc"} loading={loading} /> :

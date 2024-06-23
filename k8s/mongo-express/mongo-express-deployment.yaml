@@ -19,8 +19,10 @@ spec:
         - containerPort: 8080
         env:
         - name: MONGO_URL
-          value: MONGODB_URI
-
+          valueFrom:
+            secretKeyRef:
+              name: mongo-express-secret
+              key: MONGODB_URI
 
 ---
 apiVersion: v1

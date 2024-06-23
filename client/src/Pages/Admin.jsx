@@ -16,7 +16,7 @@ export default function Dashboard() {
     <div className='flex flex-col'>
       <div className='mr-[2rem] mt-5 flex flex-col lg:flex-row justify-between dashboard'>
         <div className="flex flex-col items-center justify-center">
-          <div className="mid flex flex-col">
+          <div className=" flex flex-col">
             <GreetingBox />
             <div className="flex lg:flex-row flex-col item-center justify-center mb-5">
               <AreaChart chartData={chartData} />

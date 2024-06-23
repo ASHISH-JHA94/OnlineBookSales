@@ -3,17 +3,17 @@ import { FaCheckCircle } from 'react-icons/fa';
 
 const Summarycard = ({ summaryData }) => {
   return (
-    <div className="mx-auto w-full md:bg-dark-blue rounded-lg p-6 text-[#EEEEEE] max-w-[90%]" style={{ backgroundColor: '#243B55', borderRadius: '25px', padding: '24px', color: '#FFFFFF' }}>
-      <h2 className="text-xl font-bold mb-4">Performance</h2>
+    <div className="flex-col flex-wrap justify-center  md:bg-dark-blue rounded-lg p-6 text-[#EEEEEE] max-w-[90%]" style={{ backgroundColor: '#243B55', borderRadius: '25px', padding: '24px', color: '#FFFFFF' }}>
+      <h2 className="text-xl font-bold mb-4 mr-3">Performance</h2>
 
       {/* Income and Spendings Metrics */}
-      <div className="flex justify-around mb-8">
+      <div className="flex md:justify-around mb-8 sm:mx-auto gap-4">
         <div>
-          <p className="text-3xl font-bold">{summaryData.totalIncome}</p>
+          <p className="text-3xl font-bold">{Math.round(summaryData.totalIncome)}</p>
           <p className="text-sm opacity-70">Income</p>
         </div>
         <div>
-          <p className="text-3xl font-bold">{summaryData.totalSpendings}</p>
+          <p className="text-3xl font-bold">{Math.round(summaryData.totalSpendings)}</p>
           <p className="text-sm opacity-70">Spendings</p>
         </div>
       </div>

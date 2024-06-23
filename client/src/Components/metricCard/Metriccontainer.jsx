@@ -9,8 +9,8 @@ const MetricsContainer = ({ summaryData }) => {
         <span className="text-md flex">General statistic of user engagement processes.</span>
       </div>
       <div className="flex gap-8 md:flex-row flex-col">
-        <MetricCard label="Total Income" value={summaryData.totalIncome} IconComponent="MoneyIcon" trend="up" />
-        <MetricCard label="Total Spendings" value={summaryData.totalSpendings} IconComponent="SpendingsIcon" trend="down" />
+        <MetricCard label="Total Income" value={Math.round(summaryData.totalIncome)} IconComponent="MoneyIcon" trend="up" />
+        <MetricCard label="Total Spendings" value={Math.round(summaryData.totalSpendings)} IconComponent="SpendingsIcon" trend="down" />
       </div>
     </div>
   );
