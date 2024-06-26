@@ -104,7 +104,7 @@ const Cart = () => {
           headers: { Authorization: `Bearer ${token}` }
         });
 
-        console.log("Checkout successful:", response.data);
+        console.log("Checkout successful:", response.data.message);
         showToast("success","Cart","Checkout successful");
       }
     } catch (error) {

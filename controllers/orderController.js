@@ -6,7 +6,6 @@ require('dotenv').config();
 const axios = require("axios");
 const cron = require('node-cron');
 
-
 const getLatLngFromAddress = async (address) => {
   const { GEOAPIFY_API_KEY } = process.env;
   const url = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(address)}&apiKey=${GEOAPIFY_API_KEY}`;
@@ -45,8 +44,6 @@ const calculateDistance = (origin, destination) => {
 
   return distanceInKm;
 };
-
-
 
 const processPendingOrders = async () => {
   try {
@@ -163,17 +160,17 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
 
 const queueOrderForLaterConfirmation = async (orderDetails) => {
   try {
-    await Order.create({
+    const newOrder = new Order({
       ...orderDetails,
       orderStatus: 'pending',
     });
+
+    const savedOrder = await newOrder.save();
+    console.log('Queued order for later confirmation:', savedOrder);
   } catch (error) {
     console.error('Error queuing order for later confirmation:', error);
   }
 };
-
-
-
 
 
 
