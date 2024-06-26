@@ -60,6 +60,7 @@ const PastOrders = () => {
               <div><strong>Order ID:</strong> {order._id}</div>
               <div><strong>Order Date:</strong> {format(new Date(order.createdAt), 'MMMM dd, yyyy')}</div>
               <div><strong>Total Amount:</strong> ${order.totalPrice}</div>
+              <div><strong>OrderStatus:</strong> {order.orderStatus}</div>
             </div>
             <div className="mt-4">
               <h3 className="font-semibold">Order Items:</h3>

@@ -112,9 +112,15 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
 
     const totalPrice = itemsPrice + taxPrice + totalShippingCost;
 
+    const sourceLatLng = productLatLngs[0]; // Assuming the first product's location as source
+
     if (isWithin15Km) {
       const order = await Order.create({
-        shippingInfo,
+        shippingInfo: {
+          ...shippingInfo,
+          source: sourceLatLng,
+          destination: customerLatLng,
+        },
         orderItems,
         paymentInfo,
         itemsPrice,
@@ -132,7 +138,11 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
       });
     } else {
       await queueOrderForLaterConfirmation({
-        shippingInfo,
+        shippingInfo: {
+          ...shippingInfo,
+          source: sourceLatLng,
+          destination: customerLatLng,
+        },
         orderItems,
         paymentInfo,
         itemsPrice,
@@ -150,7 +160,7 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.error('Error creating new order:', error);
+    console.error('Error creating new order:', error.message, error.stack);
     res.status(500).json({
       success: false,
       message: 'Internal server error',
@@ -160,17 +170,15 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
 
 const queueOrderForLaterConfirmation = async (orderDetails) => {
   try {
-    const newOrder = new Order({
-      ...orderDetails,
-      orderStatus: 'pending',
-    });
-
-    const savedOrder = await newOrder.save();
-    console.log('Queued order for later confirmation:', savedOrder);
+    console.log("Queuing order for later confirmation:", orderDetails);
+    await Order.create(orderDetails);
   } catch (error) {
-    console.error('Error queuing order for later confirmation:', error);
+    console.error('Error queuing order for later confirmation:', error.message, error.stack);
   }
 };
+
+
+
 
 
 
