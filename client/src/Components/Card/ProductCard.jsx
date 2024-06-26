@@ -23,7 +23,7 @@ const Product = (props) => {
 
   const add_to_Cart = () => {
     dispatch(addToCart(post));
-    showToast.success("success","cart","item added to cart successfully")
+    showToast("success","cart","item added to cart successfully")
   };
 
   const remove_from_cart = () => {
