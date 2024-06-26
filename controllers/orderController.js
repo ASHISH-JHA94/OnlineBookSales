@@ -3,8 +3,8 @@ const Product = require("../models/productSchema.js");
 const ErrorHandler = require("../utils/errorHandler.js");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors.js");
 require('dotenv').config();
-const Customer=require("../models/customerSchema.js")
-const axios=require("axios");
+const axios = require("axios");
+const cron = require('node-cron');
 
 
 const getLatLngFromAddress = async (address) => {
@@ -14,9 +14,6 @@ const getLatLngFromAddress = async (address) => {
   try {
     const response = await axios.get(url);
     const { lat, lon } = response.data.features[0].properties;
-    console.log(lat);
-    console.log("hii");
-    console.log(lon);
     return { latitude: lat, longitude: lon };
   } catch (error) {
     console.error('Error getting latitude and longitude:', error);
@@ -49,65 +46,114 @@ const calculateDistance = (origin, destination) => {
   return distanceInKm;
 };
 
+const cron = require('node-cron');
+const Order = require('../models/orderSchema.js');
+const Product = require('../models/productSchema.js');
+const { calculateDistance } = require('./distanceUtils.js');  // Extract distance calculation to a utility file
+
+const processPendingOrders = async () => {
+  try {
+    const pendingOrders = await Order.find({ orderStatus: 'pending' }).populate('orderItems');
+
+    pendingOrders.sort((a, b) => {
+      const distanceA = calculateDistance(a.shippingInfo.source, a.shippingInfo.destination);
+      const distanceB = calculateDistance(b.shippingInfo.source, b.shippingInfo.destination);
+      return distanceA - distanceB;
+    });
+
+    for (const order of pendingOrders) {
+      let canFulfillOrder = true;
+
+      for (const item of order.orderItems) {
+        const product = await Product.findById(item.product);
+        if (product.stock < item.quantity) {
+          canFulfillOrder = false;
+          break;
+        }
+      }
+
+      if (canFulfillOrder) {
+        for (const item of order.orderItems) {
+          const product = await Product.findById(item.product);
+          product.stock -= item.quantity;
+          await product.save();
+        }
+        order.orderStatus = 'confirmed';
+        await order.save();
+      }
+    }
+  } catch (error) {
+    console.error('Error processing pending orders:', error);
+  }
+};
+
+// Schedule the task to run every day at midnight
+cron.schedule('0 0 * * *', processPendingOrders);
+
 
 exports.newOrder = catchAsyncErrors(async (req, res, next) => {
-  console.log(req.body);
-
   const { shippingInfo, paymentInfo, itemsPrice, taxPrice, orderItems } = req.body;
 
   try {
-    // Get latitude and longitude for the customer's address
     const customerAddress = `${shippingInfo.address}, ${shippingInfo.city}, ${shippingInfo.state}, ${shippingInfo.country}`;
     const customerLatLng = await getLatLngFromAddress(customerAddress);
 
-    // Get latitude and longitude for each product's address
     const productIds = orderItems.map(item => item.product);
     const products = await Product.find({ _id: { $in: productIds } }).populate('user');
     const productLatLngs = await Promise.all(products.map(async (product) => {
       const productAddress = `${product.user.address}, ${product.user.city}, ${product.user.state}, ${product.user.country}`;
-      
       return getLatLngFromAddress(productAddress);
     }));
 
-    // Calculate total shipping cost
     let totalShippingCost = 0;
+    let isWithin15Km = true;
     for (const latLng of productLatLngs) {
-      const shippingCost = await calculateDistance(customerLatLng, latLng);
-      totalShippingCost += shippingCost;
+      const distance = calculateDistance(customerLatLng, latLng);
+      if (distance > 15) {
+        isWithin15Km = false;
+      }
+      totalShippingCost += distance;
     }
 
     const totalPrice = itemsPrice + taxPrice + totalShippingCost;
 
-    // Create the shipping location objects
-    const sourceLocation = {
-      latitude: customerLatLng.latitude,
-      longitude: customerLatLng.longitude
-    };
-    const destinationLocation = {
-      latitude: productLatLngs[0].latitude,
-      longitude: productLatLngs[0].longitude
-    };
+    if (isWithin15Km) {
+      const order = await Order.create({
+        shippingInfo,
+        orderItems,
+        paymentInfo,
+        itemsPrice,
+        taxPrice,
+        shippingPrice: totalShippingCost,
+        totalPrice,
+        paidAt: Date.now(),
+        user: req.user._id,
+        orderStatus: 'confirmed',
+      });
 
-    const order = await Order.create({
-      shippingInfo: {
-        ...shippingInfo,
-        source: sourceLocation,
-        destination: destinationLocation
-      },
-      orderItems,
-      paymentInfo,
-      itemsPrice,
-      taxPrice,
-      shippingPrice: totalShippingCost,
-      totalPrice,
-      paidAt: Date.now(),
-      user: req.user._id,
-    });
+      res.status(201).json({
+        success: true,
+        order,
+      });
+    } else {
+      await queueOrderForLaterConfirmation({
+        shippingInfo,
+        orderItems,
+        paymentInfo,
+        itemsPrice,
+        taxPrice,
+        shippingPrice: totalShippingCost,
+        totalPrice,
+        user: req.user._id,
+        paidAt: Date.now(),
+        orderStatus: 'pending',
+      });
 
-    res.status(201).json({
-      success: true,
-      order,
-    });
+      res.status(200).json({
+        success: true,
+        message: 'Order has been queued for confirmation after 24 hours',
+      });
+    }
   } catch (error) {
     console.error('Error creating new order:', error);
     res.status(500).json({
@@ -116,6 +162,20 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     });
   }
 });
+
+const queueOrderForLaterConfirmation = async (orderDetails) => {
+  try {
+    await Order.create({
+      ...orderDetails,
+      orderStatus: 'pending',
+    });
+  } catch (error) {
+    console.error('Error queuing order for later confirmation:', error);
+  }
+};
+
+
+
 
 
 
