@@ -46,10 +46,7 @@ const calculateDistance = (origin, destination) => {
   return distanceInKm;
 };
 
-const cron = require('node-cron');
-const Order = require('../models/orderSchema.js');
-const Product = require('../models/productSchema.js');
-const { calculateDistance } = require('./distanceUtils.js');  // Extract distance calculation to a utility file
+
 
 const processPendingOrders = async () => {
   try {
