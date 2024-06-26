@@ -5,7 +5,7 @@ const catchAsyncErrors = require("../middlewares/catchAsyncErrors.js");
 require('dotenv').config();
 const axios = require("axios");
 const cron = require('node-cron');
-
+const { calculateDistance } = require('./distanceUtils.js');
 
 const getLatLngFromAddress = async (address) => {
   const { GEOAPIFY_API_KEY } = process.env;
@@ -21,32 +21,16 @@ const getLatLngFromAddress = async (address) => {
   }
 };
 
-const calculateDistance = (origin, destination) => {
-  const toRadians = (degrees) => {
-    return degrees * (Math.PI / 180);
-  };
-
-  const earthRadiusKm = 6371;
-
-  const { latitude: lat1, longitude: lon1 } = origin;
-  const { latitude: lat2, longitude: lon2 } = destination;
-
-  const dLat = toRadians(lat2 - lat1);
-  const dLon = toRadians(lon2 - lon1);
-
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRadians(lat1)) *
-      Math.cos(toRadians(lat2)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  const distanceInKm = earthRadiusKm * c;
-
-  return distanceInKm;
+const queueOrderForLaterConfirmation = async (orderDetails) => {
+  try {
+    await Order.create({
+      ...orderDetails,
+      orderStatus: 'pending',
+    });
+  } catch (error) {
+    console.error('Error queuing order for later confirmation:', error);
+  }
 };
-
-
 
 const processPendingOrders = async () => {
   try {
@@ -77,6 +61,8 @@ const processPendingOrders = async () => {
         }
         order.orderStatus = 'confirmed';
         await order.save();
+      } else {
+        await order.remove();
       }
     }
   } catch (error) {
@@ -86,7 +72,6 @@ const processPendingOrders = async () => {
 
 // Schedule the task to run every day at midnight
 cron.schedule('0 0 * * *', processPendingOrders);
-
 
 exports.newOrder = catchAsyncErrors(async (req, res, next) => {
   const { shippingInfo, paymentInfo, itemsPrice, taxPrice, orderItems } = req.body;
@@ -159,17 +144,6 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
     });
   }
 });
-
-const queueOrderForLaterConfirmation = async (orderDetails) => {
-  try {
-    await Order.create({
-      ...orderDetails,
-      orderStatus: 'pending',
-    });
-  } catch (error) {
-    console.error('Error queuing order for later confirmation:', error);
-  }
-};
 
 
 
