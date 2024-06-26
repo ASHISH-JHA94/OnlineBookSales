@@ -28,7 +28,7 @@ const Cart = () => {
         localStorage.removeItem('token');
       } else {
         try {
-          const response = await axios.get("http://localhost:8080/customer/cart", {
+          const response = await axios.get("https://old-book-sales.vercel.app/customer/cart", {
             headers: { 'token': token }
           });
           const updatedCart = response.data.cartItems;
