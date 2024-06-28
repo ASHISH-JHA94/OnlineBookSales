@@ -48,6 +48,12 @@ const calculateDistance = (origin, destination) => {
 const processPendingOrders = async () => {
   try {
     const pendingOrders = await Order.find({ orderStatus: 'pending' }).populate('orderItems');
+    console.log("Pending orders:", pendingOrders);
+
+    if (pendingOrders.length === 0) {
+      console.log("No pending orders to process.");
+      return;
+    }
 
     pendingOrders.sort((a, b) => {
       const distanceA = calculateDistance(a.shippingInfo.source, a.shippingInfo.destination);
@@ -74,8 +80,10 @@ const processPendingOrders = async () => {
         }
         order.orderStatus = 'confirmed';
         await order.save();
+        console.log("Order confirmed:", order._id);
       } else {
         await order.remove();
+        console.log("Order removed due to insufficient stock:", order._id);
       }
     }
   } catch (error) {
@@ -83,8 +91,11 @@ const processPendingOrders = async () => {
   }
 };
 
-// Schedule the task to run every day at midnight
-cron.schedule('0 0 * * *', processPendingOrders);
+cron.schedule('0 0 * * *', () => {
+  console.log("Cron job started at", new Date());
+  processPendingOrders();
+});
+
 
 exports.newOrder = catchAsyncErrors(async (req, res, next) => {
   const { shippingInfo, paymentInfo, itemsPrice, taxPrice, orderItems } = req.body;
