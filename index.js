@@ -64,18 +64,15 @@ app.get('/', (req, res) => {
     res.send(`Welcome to Book4u Backend`);
 })
 
-// Handle Cron Job Endpoint
-app.get('/api/corn', async (req, res) => {
+cron.schedule('*/1 * * * *', async () => {
+    console.log("Cron job started at", new Date());
     try {
-      console.log("Cron job started at", new Date());
-      await processPendingOrders();
-      console.log("Cron job completed at", new Date());
-      res.status(200).send("Cron job executed successfully");
+       await processPendingOrders();
+       console.log("Cron job completed at", new Date());
     } catch (error) {
-      console.error("Error processing orders:", error);
-      res.status(500).send("Error processing orders");
+       console.error("Error processing orders:", error);
     }
-  });
+});
 
 
 
