@@ -45,7 +45,7 @@ const calculateDistance = (origin, destination) => {
   return distanceInKm;
 };
 
-const processPendingOrders = async () => {
+exports.processPendingOrders = async () => {
   try {
     const pendingOrders = await Order.find({ orderStatus: 'pending' }).populate('orderItems');
     console.log("Pending orders:", pendingOrders);
@@ -91,15 +91,7 @@ const processPendingOrders = async () => {
   }
 };
 
-cron.schedule('*/1 * * * *', () => {
-  console.log("Cron job started at", new Date());
-  try {
-    processPendingOrders();
-    console.log("Cron job completed at", new Date());
-  } catch (error) {
-    console.error("Error processing orders:", error);
-  }
-});
+
 
 
 exports.newOrder = catchAsyncErrors(async (req, res, next) => {

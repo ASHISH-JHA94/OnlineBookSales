@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 
-
+const processPendingOrders =require("./controllers/orderController.js")
 const errorMiddleware = require("./middlewares/error.js");
 
 // dotenv.config({path : `.env`})
@@ -59,8 +59,18 @@ app.use('admin',authorizeRoles,admin);
 // Middleware for Errors
 app.use(errorMiddleware);
 app.get('/', (req, res) => {
-    res.send(`Welcome to Scizers Assignment !!!    Made by Trisha Sahu`);
+    res.send(`Welcome to Book4u Backend`);
 })
+
+cron.schedule('*/1 * * * *', () => {
+    console.log("Cron job started at", new Date());
+    try {
+      processPendingOrders();
+      console.log("Cron job completed at", new Date());
+    } catch (error) {
+      console.error("Error processing orders:", error);
+    }
+  });
 
 app.listen(PORT,()=>{
     console.log(`Server is running on port ${PORT}`);
