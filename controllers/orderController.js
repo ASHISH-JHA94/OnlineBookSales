@@ -4,7 +4,7 @@ const ErrorHandler = require("../utils/errorHandler.js");
 const catchAsyncErrors = require("../middlewares/catchAsyncErrors.js");
 require('dotenv').config();
 const axios = require("axios");
-const cron = require('node-cron');
+
 
 const getLatLngFromAddress = async (address) => {
   const { GEOAPIFY_API_KEY } = process.env;
