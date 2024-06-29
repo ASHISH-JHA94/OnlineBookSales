@@ -29,8 +29,10 @@ if (!MONGO_URL) {
 // MongoDB connection
 mongoose.connect(MONGO_URL, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 30000, // 30 seconds
+    socketTimeoutMS: 45000, // 45 seconds
+});
 mongoose.connection.on('connected', () => {
     console.log("Connected to MongoDB")
 })
