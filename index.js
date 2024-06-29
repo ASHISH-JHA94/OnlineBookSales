@@ -64,15 +64,15 @@ app.get('/', (req, res) => {
     res.send(`Welcome to Book4u Backend`);
 })
 
-cron.schedule('*/1 * * * *', () => {
+cron.schedule('*/1 * * * *', async () => {
     console.log("Cron job started at", new Date());
     try {
-        processPendingOrders();
-      console.log("Cron job completed at", new Date());
+       await processPendingOrders();
+       console.log("Cron job completed at", new Date());
     } catch (error) {
-      console.error("Error processing orders:", error);
+       console.error("Error processing orders:", error);
     }
-  });
+});
 
 
 
