@@ -91,9 +91,14 @@ const processPendingOrders = async () => {
   }
 };
 
-cron.schedule('0 0 * * *', () => {
+cron.schedule('*/1 * * * *', () => {
   console.log("Cron job started at", new Date());
-  processPendingOrders();
+  try {
+    processPendingOrders();
+    console.log("Cron job completed at", new Date());
+  } catch (error) {
+    console.error("Error processing orders:", error);
+  }
 });
 
 
