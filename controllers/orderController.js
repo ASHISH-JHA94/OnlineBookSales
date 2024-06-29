@@ -47,7 +47,7 @@ const calculateDistance = (origin, destination) => {
 
 exports.processPendingOrders = async () => {
   try {
-    const pendingOrders = await Order.find({ orderStatus: 'pending' }).populate('orderItems');
+    const pendingOrders = await Order.find({ orderStatus: 'pending' });
     console.log("Pending orders:", pendingOrders);
 
     if (pendingOrders.length === 0) {
