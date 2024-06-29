@@ -65,12 +65,14 @@ app.get('/', (req, res) => {
 cron.schedule('*/1 * * * *', () => {
     console.log("Cron job started at", new Date());
     try {
-      processPendingOrders();
+        processPendingOrders();
       console.log("Cron job completed at", new Date());
     } catch (error) {
       console.error("Error processing orders:", error);
     }
   });
+
+  processPendingOrders();
 
 app.listen(PORT,()=>{
     console.log(`Server is running on port ${PORT}`);
