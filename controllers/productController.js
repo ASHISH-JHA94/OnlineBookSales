@@ -172,10 +172,39 @@ exports.getShareableLink = async (req, res) => {
 };
 
 exports.getAllProduct = catchAsyncErrors(async (req, res) => {
-  const products = await Product.find();
-  console.log("hii");
+  const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+  const limit = parseInt(req.query.limit) || 10; // Default to limit 10 if not provided
+
+  console.log(page);
+  console.log(limit);
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const total = await Product.countDocuments();
+
+  const products = await Product.find().skip(startIndex).limit(limit);
+
+  const pagination = {};
+
+  if (endIndex < total) {
+    pagination.next = {
+      page: page + 1,
+      limit: limit
+    };
+  }
+
+  if (startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit: limit
+    };
+  }
+
   res.status(200).json({
     success: true,
-    products,
+    count: products.length,
+    pagination,
+    products
   });
 });
