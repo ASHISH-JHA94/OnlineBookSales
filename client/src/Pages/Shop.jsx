@@ -44,7 +44,7 @@ const Shop = () => {
         if (loading) return; // Prevent multiple simultaneous requests
         setLoading(true);
         try {
-            const response = await fetch(`${API_URL}?page=${page}&limit=8`);
+            const response = await fetch(`${API_URL}?page=${page}&limit=9`);
             const data = await response.json();
             console.log("Fetched data:", data); // Log fetched data to console
             setPosts((prevPosts) => [...prevPosts, ...data.products]); // Append new data to existing posts
