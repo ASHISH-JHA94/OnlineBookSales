@@ -25,7 +25,7 @@ const theme = createTheme({
 });
 
 const Shop = () => {
-    const API_URL = "http://localhost:8080/product/getAllProducts";
+    const API_URL = "https://old-book-sales.vercel.app/product/getAllProducts";
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [posts, setPosts] = useState([]);
